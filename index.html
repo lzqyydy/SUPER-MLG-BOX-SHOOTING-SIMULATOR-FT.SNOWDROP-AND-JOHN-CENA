@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Snowdrop MLG Clicker</title>
+    <style>
+      *{
+        margin: 0;
+      }
+      body{
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        cursor: none;
+      }
+      #hint{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 10vh;
+        font-size: 24px;
+      }
+      #hint2{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 10vh;
+        font-size: 36px;
+        color: white;
+      }
+      #sniper{
+        position: absolute;
+        max-width: 400px;
+        top: 9999px;
+        left: 9999px;
+      }
+      #finish{
+        display: none;
+        width: 100vw;
+        height: 100vh;
+      }
+      #bg{
+        width: 200vmax;
+        height: 200vmax;
+        animation: rotate 1s linear;
+        animation-iteration-count: infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+      .grid-center-wrapper{
+        position: absolute;
+        display: grid;
+        width: 100%;
+        height: 100%;
+      }
+      .grid-center-item{
+        margin: auto;
+      }
+      @keyframes rotate {
+        0%{
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100%{
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    <div id="hint"></div>
+    <div class="grid-center-wrapper">
+      <img id="box" class="grid-center-item" draggable="false" src="imgs/box.jpg">
+    </div>
+    <img id="sniper" src="imgs/sniper.png">
+    <div id="finish">
+      <img class="grid-center-item" id="bg" src="imgs/rainbowspiral.jpg">
+      <div class="grid-center-wrapper">
+        <img class="grid-center-item" id="snowdrop" src="imgs/snowdrop.png">
+      </div>
+      <div id="hint2">Congraturation! You are Winner!</div>
+    </div>
+  </body>
+
+  <script>
+    const data = {};
+    data.life = 10000;
+    document.querySelector('#hint').innerHTML = `Life: ${data.life}`;
+    document.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(data.life > 0){
+        let boundary = document.querySelector('#box').getBoundingClientRect();
+        if(e.clientX>boundary.left&&e.clientX<boundary.right){
+          if(e.clientY>boundary.top&&e.clientY<boundary.bottom){
+            data.life -= 100;
+            document.querySelector('#hint').innerHTML = `Life: ${data.life}`;
+            if(data.life <= 0){
+              document.querySelector('#finish').style.display = "block";
+            }
+          }
+        }
+      }
+    });
+    document.addEventListener('mousedown', (e)=>{e.preventDefault()});
+    document.addEventListener('mousemove', (e)=>{
+      document.querySelector('#sniper').style.left = e.clientX-90+'px';
+      document.querySelector('#sniper').style.top = e.clientY-65+'px';
+    });
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</html>
